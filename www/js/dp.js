@@ -8,16 +8,16 @@ var gListVblank = new Array("45", "20", "90", "75", "180");
 
 var gListVsync = new Array("30 Hz", "60 Hz", "120 Hz" );
 var gListColor = new Array("8 Bit", "10 Bit", "12 Bit" );
-var gListByteMode = new Array("3 Byte", "4 Byte", "5 Byte" );
+var gListPixEncFmt = new Array("0.5 (4:2:0)", "0.75 (4:2:2)", "1 (4:4:4)" );
 
 var gHashItems = new Array();
-var gDefaultValue = new Array(4, 4, 2, 1, 1);     //VSync, Color Depth, Byte Mode
+var gDefaultValue = new Array(4, 4, 2, 1, 2);     //VSync, Color Depth, Pixel Encoding
 
 var gHtotal;
 var gVtotal;
 var gVsync;
 var gColorDepth;
-var gByteMode;
+var gPixEncFmt;
 
 
 Number.prototype.format = function(){
@@ -94,7 +94,7 @@ var appB = {
         {
             gHashItems[gListVsync[i]] = i;
             gHashItems[gListColor[i]] = i;
-            gHashItems[gListByteMode[i]] = i;
+            gHashItems[gListPixEncFmt[i]] = i;
         }
     },
 
@@ -140,9 +140,9 @@ var appB = {
             $( "#page_view4 label:eq("+i+")" ).append('<input type="radio" name="options-4">').append(gListColor[i]);
             $( "#page_view4 input:eq("+i+")" ).attr('value', gListColor[i]);
 
-            $( "#page_view5 ul" ).append('<li><a href="#">' + gListByteMode[i] + '</a></li>');
-            $( "#page_view5 label:eq("+i+")" ).append('<input type="radio" name="options-5">').append(gListByteMode[i]);
-            $( "#page_view5 input:eq("+i+")" ).attr('value', gListByteMode[i]);
+            $( "#page_view5 ul" ).append('<li><a href="#">' + gListPixEncFmt[i] + '</a></li>');
+            $( "#page_view5 label:eq("+i+")" ).append('<input type="radio" name="options-5">').append(gListPixEncFmt[i]);
+            $( "#page_view5 input:eq("+i+")" ).attr('value', gListPixEncFmt[i]);
         }
 
     },
@@ -157,13 +157,13 @@ var appB = {
 
         $( "#page_view3 input:radio[name=options-3][value='"+gListVsync[gDefaultValue[2]]+"']" ).attr("checked", true);
         $( "#page_view4 input:radio[name=options-4][value='"+gListColor[gDefaultValue[3]]+"']" ).attr("checked", true);
-        $( "#page_view5 input:radio[name=options-5][value='"+gListByteMode[gDefaultValue[4]]+"']" ).attr("checked", true);
+        $( "#page_view5 input:radio[name=options-5][value='"+gListPixEncFmt[gDefaultValue[4]]+"']" ).attr("checked", true);
 
         gHtotal = $( "#page_view1 input" ).val();
         gVtotal = $( "#page_view2 input" ).val();
         gVsync = eval( '$( "#page_view3 label:eq(' + gDefaultValue[2] + ')" ).text().split(" ")[0]' );
         gColorDepth = eval( '$( "#page_view4 label:eq(' + gDefaultValue[3] + ')" ).text().split(" ")[0]' );
-        gByteMode = eval( '$( "#page_view5 label:eq(' + gDefaultValue[4] + ')" ).text().split(" ")[0]' );
+        gPixEncFmt = eval( '$( "#page_view5 label:eq(' + gDefaultValue[4] + ')" ).text().split(" ")[0]' );
     },
 
 
@@ -256,27 +256,27 @@ var appB = {
 
         gVsync = $( "#page_view3 input:radio[name=options-3][checked]" ).val().split(" ")[0];
         gColorDepth = $( "#page_view4 input:radio[name=options-4][checked]" ).val().split(" ")[0];
-        gByteMode = $( "#page_view5 input:radio[name=options-5][checked]" ).val().split(" ")[0];
+        gPixEncFmt = $( "#page_view5 input:radio[name=options-5][checked]" ).val().split(" ")[0];
 
         var pixelFreq = gHtotal * gVtotal * gVsync;
         panelWord = panelWord + "<b>Pixel Color(Pixel Freq)</b><br>" + pixelFreq.format() + " Hz <br><br>";
 
-        var tVideoRate = pixelFreq * gColorDepth * 3;
+        var tVideoRate = pixelFreq * (gColorDepth * 3);
         panelWord = panelWord + "<b>Total video data rate(Payload)</b><br>" + tVideoRate.format() + " bps<br><br>";
 
-        var tBitRate = gByteMode * 8 * 10 / 8 * pixelFreq;
+        var tBitRate = gPixEncFmt * tVideoRate * (gColorDepth / 8);
         panelWord = panelWord + "<b>Total bit rate required</b><br>" + tBitRate.format() + " bps<br><br>"
 
-        var laneCalc = tBitRate / 3200000000;
+        var laneCalc = tBitRate / 5400000000;
         panelWord = panelWord + "<b>Lane Calculation</b><br>" + laneCalc.format() + " lane<br><br>"        
 
-        var laneReq = Math.ceil(tBitRate / 3200000000);
+        var laneReq = Math.ceil(tBitRate / 5400000000);
         panelWord = panelWord + "<b>Required # of lane in calculation</b><br>" + laneReq.format() + " lane<br><br>"
 
         var laneReal = ((laneReq%2)?laneReq+1:laneReq);
         panelWord = panelWord + "<b>Required # of lane in real</b><br>" + laneReal.format() + " lane<br><br>"
 
-        var laneReqLG = Math.ceil(tBitRate / 2970000000);
+        var laneReqLG = Math.ceil(tBitRate / 5400000000);
         panelWord = panelWord + "<b>Required # of lane in calculation(LGE)</b><br>" + laneReqLG.format() + " lane<br><br>"
 
         var laneRealLG = ((laneReqLG%2)?laneReqLG+1:laneReqLG);
