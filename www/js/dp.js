@@ -8,16 +8,18 @@ var gListVblank = new Array("45", "20", "90", "75", "180");
 
 var gListVsync = new Array("30 Hz", "60 Hz", "120 Hz" );
 var gListColor = new Array("8 Bit", "10 Bit", "12 Bit" );
-var gListPixEncFmt = new Array("4:2:0", "4:2:2", "4:4:4" );
+var gListPixEncFmt = new Array("4:2:0", "4:2:2", "4:4:4");
+var gListCompression = new Array("O", "X");
 
 var gHashItems = new Array();
-var gDefaultValue = new Array(4, 4, 2, 1, 2);     //VSync, Color Depth, Pixel Encoding
+var gDefaultValue = new Array(4, 4, 2, 1, 2, 1);     //VSync, Color Depth, Pixel Encoding, Compression
 
 var gHtotal;
 var gVtotal;
 var gVsync;
 var gColorDepth;
 var gPixEncFmt;
+var gCompression;
 
 
 Number.prototype.format = function(){
@@ -95,6 +97,10 @@ var appB = {
             gHashItems[gListColor[i]] = i;
             gHashItems[gListPixEncFmt[i]] = i;
         }
+
+        for (var i = 0; i < 2; i++) {
+            gHashItems[gListCompression[i]] = i;
+        }
     },
 
 
@@ -144,6 +150,12 @@ var appB = {
             $("#page_view5 input:eq(" + i + ")").attr('value', gListPixEncFmt[i]);
         }
 
+        for (var i = 0; i < 2; i++) {
+            $("#page_view6 ul").append('<li><a href="#">' + gListCompression[i] + '</a></li>');
+            $("#page_view6 label:eq(" + i + ")").append('<input type="radio" name="options-6">').append(gListCompression[i]);
+            $("#page_view6 input:eq(" + i + ")").attr('value', gListCompression[i]);
+        }
+
     },
 
 
@@ -153,16 +165,19 @@ var appB = {
         eval('$( "#page_view3 label:eq(' + gDefaultValue[2] + ')" ).toggleClass("active")');
         eval('$( "#page_view4 label:eq(' + gDefaultValue[3] + ')" ).toggleClass("active")');
         eval('$( "#page_view5 label:eq(' + gDefaultValue[4] + ')" ).toggleClass("active")');
+        eval('$( "#page_view6 label:eq(' + gDefaultValue[5] + ')" ).toggleClass("active")');
 
         $("#page_view3 input:radio[name=options-3][value='" + gListVsync[gDefaultValue[2]] + "']").attr("checked", true);
         $("#page_view4 input:radio[name=options-4][value='" + gListColor[gDefaultValue[3]] + "']").attr("checked", true);
         $("#page_view5 input:radio[name=options-5][value='" + gListPixEncFmt[gDefaultValue[4]] + "']").attr("checked", true);
+        $("#page_view6 input:radio[name=options-6][value='" + gListCompression[gDefaultValue[5]] + "']").attr("checked", true);
 
         gHtotal = $("#page_view1 input").val();
         gVtotal = $("#page_view2 input").val();
         gVsync = eval('$( "#page_view3 label:eq(' + gDefaultValue[2] + ')" ).text().split(" ")[0]');
         gColorDepth = eval('$( "#page_view4 label:eq(' + gDefaultValue[3] + ')" ).text().split(" ")[0]');
         gPixEncFmt = 1;
+        gCompression = 1;
     },
 
 
@@ -230,6 +245,23 @@ var appB = {
             eval('$( "#page_view5 label" ).removeClass("active")');
             eval('$( "#page_view5 label:eq(' + gHashItems[str] + ')" ).addClass("active")');
         });
+
+        $("#page_view6 li a").click(function () {
+            var str = $(this).text();
+            $("input:radio[name=options-6][value='" + str + "']").attr("checked", true);
+            $("input:radio[name=options-6][value!='" + str + "']").attr("checked", false);
+            eval('$( "#page_view6 label" ).removeClass("active")');
+            eval('$( "#page_view6 label:eq(' + gHashItems[str] + ')" ).addClass("active")');
+        });
+
+
+        $("#page_view6 label").click(function () {
+            var str = $(this).text();
+            $("input:radio[name=options-6][value='" + str + "']").attr("checked", true);
+            $("input:radio[name=options-6][value!='" + str + "']").attr("checked", false);
+            eval('$( "#page_view6 label" ).removeClass("active")');
+            eval('$( "#page_view6 label:eq(' + gHashItems[str] + ')" ).addClass("active")');
+        });
     },
 
 
@@ -265,13 +297,21 @@ var appB = {
             gPixEncFmt = 1;
         }
 
+        var inputStr6 = $("#page_view6 input:radio[name=options-6][checked]").val();
+        if (inputStr6 == "O") {
+            gCompression = 0.33;
+        }
+        else {
+            gCompression = 1;
+        }
+
         var pixelFreq = gHtotal * gVtotal * gVsync;
         panelWord = panelWord + "<b>Pixel Color(Pixel Freq)</b><br>" + pixelFreq.format() + " Hz <br><br>";
 
         var tVideoRate = pixelFreq * (gColorDepth * 3);
         panelWord = panelWord + "<b>Total video data rate(Payload)</b><br>" + tVideoRate.format() + " bps<br><br>";
 
-        var tBitRate = gPixEncFmt * tVideoRate * (gColorDepth / 8);
+        var tBitRate = gPixEncFmt * tVideoRate * (gColorDepth / 8) * gCompression;
         panelWord = panelWord + "<b>Total bit rate required</b><br>" + tBitRate.format() + " bps<br><br>"
 
         var laneCalc = tBitRate / 5400000000;
