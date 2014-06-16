@@ -8,7 +8,7 @@ var gListVblank = new Array("45", "20", "90", "75", "180");
 
 var gListVsync = new Array("30 Hz", "60 Hz", "120 Hz" );
 var gListColor = new Array("8 Bit", "10 Bit", "12 Bit" );
-var gListPixEncFmt = new Array("0.5 (4:2:0)", "0.75 (4:2:2)", "1 (4:4:4)" );
+var gListPixEncFmt = new Array("4:2:0", "4:2:2", "4:4:4" );
 
 var gHashItems = new Array();
 var gDefaultValue = new Array(4, 4, 2, 1, 2);     //VSync, Color Depth, Pixel Encoding
@@ -55,19 +55,19 @@ String.prototype.byteLength = function() {
 
 var appB = {
 
-    initialize: function() {
+    initialize: function () {
         this.bindEvents();
     },
 
-    bindEvents: function() {
+    bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
 
-    onDeviceReady: function() {
+    onDeviceReady: function () {
         appB.receivedEvent('deviceready');
     },
 
-    receivedEvent: function(id) {
+    receivedEvent: function (id) {
         //alert('Ready');
         appB.funcMakeHash();
         appB.funcMakeList();
@@ -76,22 +76,21 @@ var appB = {
     },
 
 
-    funcMakeHash: function() {
+    funcMakeHash: function () {
 
-        var str="";
+        var str = "";
 
-        for(var i=0, len=gListHstring.length; i<len; i++) {
+        for (var i = 0, len = gListHstring.length; i < len; i++) {
             str = gListHstring[i].split(" ")[0];
             gHashItems[str] = i;
         }
 
-        for(var i=0, len=gListVstring.length; i<len; i++) {
+        for (var i = 0, len = gListVstring.length; i < len; i++) {
             str = gListVstring[i].split(" ")[0];
             gHashItems[str] = i;
-        }        
+        }
 
-        for(var i=0; i<3; i++)
-        {
+        for (var i = 0; i < 3; i++) {
             gHashItems[gListVsync[i]] = i;
             gHashItems[gListColor[i]] = i;
             gHashItems[gListPixEncFmt[i]] = i;
@@ -99,164 +98,172 @@ var appB = {
     },
 
 
-    funcMakeList: function() {
+    funcMakeList: function () {
 
-        for(var i=0, len=gListHstring.length; i<len; i++) {
-            if(!gListHstring[i])
+        for (var i = 0, len = gListHstring.length; i < len; i++) {
+            if (!gListHstring[i])
                 continue;
 
 
-            if( gListHstring[i] != "-" )
-                $( "#page_view1 ul" ).append('<li><a href="#">' + gListHstring[i] + '</a></li>');
+            if (gListHstring[i] != "-")
+                $("#page_view1 ul").append('<li><a href="#">' + gListHstring[i] + '</a></li>');
             //else
-                //$( "#page_view1 ul" ).append('<li class="divider"></li>');
+            //$( "#page_view1 ul" ).append('<li class="divider"></li>');
         }
 
-        for(var i=0, len=gListVstring.length; i<len; i++) {
-            if(!gListVstring[i])
+        for (var i = 0, len = gListVstring.length; i < len; i++) {
+            if (!gListVstring[i])
                 continue;
 
-            if( gListVstring[i] != "-" )
-                $( "#page_view2 ul" ).append('<li><a href="#">' + gListVstring[i] + '</a></li>');
+            if (gListVstring[i] != "-")
+                $("#page_view2 ul").append('<li><a href="#">' + gListVstring[i] + '</a></li>');
             //else
-                //$( "#page_view2 ul" ).append('<li class="divider"></li>');
+            //$( "#page_view2 ul" ).append('<li class="divider"></li>');
         }
 
-        for(var i=0, len=gListVsync.length; i<len; i++) {
-            if(!gListVsync[i])
+        for (var i = 0, len = gListVsync.length; i < len; i++) {
+            if (!gListVsync[i])
                 continue;
 
-            if( gListVsync[i] != "-" )
-                $( "#page_view3 ul" ).append('<li><a href="#">' + gListVsync[i] + '</a></li>');
+            if (gListVsync[i] != "-")
+                $("#page_view3 ul").append('<li><a href="#">' + gListVsync[i] + '</a></li>');
             //else
-                //$( "#page_view3 ul" ).append('<li class="divider"></li>');
+            //$( "#page_view3 ul" ).append('<li class="divider"></li>');
 
-            $( "#page_view3 label:eq("+i+")" ).append('<input type="radio" name="options-3">').append(gListVsync[i]);
-            $( "#page_view3 input:eq("+i+")" ).attr('value', gListVsync[i]);
+            $("#page_view3 label:eq(" + i + ")").append('<input type="radio" name="options-3">').append(gListVsync[i]);
+            $("#page_view3 input:eq(" + i + ")").attr('value', gListVsync[i]);
         }
 
-        for(var i=0; i<3; i++) {
-            $( "#page_view4 ul" ).append('<li><a href="#">' + gListColor[i] + '</a></li>');
-            $( "#page_view4 label:eq("+i+")" ).append('<input type="radio" name="options-4">').append(gListColor[i]);
-            $( "#page_view4 input:eq("+i+")" ).attr('value', gListColor[i]);
+        for (var i = 0; i < 3; i++) {
+            $("#page_view4 ul").append('<li><a href="#">' + gListColor[i] + '</a></li>');
+            $("#page_view4 label:eq(" + i + ")").append('<input type="radio" name="options-4">').append(gListColor[i]);
+            $("#page_view4 input:eq(" + i + ")").attr('value', gListColor[i]);
 
-            $( "#page_view5 ul" ).append('<li><a href="#">' + gListPixEncFmt[i] + '</a></li>');
-            $( "#page_view5 label:eq("+i+")" ).append('<input type="radio" name="options-5">').append(gListPixEncFmt[i]);
-            $( "#page_view5 input:eq("+i+")" ).attr('value', gListPixEncFmt[i]);
+            $("#page_view5 ul").append('<li><a href="#">' + gListPixEncFmt[i] + '</a></li>');
+            $("#page_view5 label:eq(" + i + ")").append('<input type="radio" name="options-5">').append(gListPixEncFmt[i]);
+            $("#page_view5 input:eq(" + i + ")").attr('value', gListPixEncFmt[i]);
         }
 
     },
 
 
-    funcSetDefault: function() {
-        $( "#page_view1 input" ).val(gListHstring[gDefaultValue[0]].split(" ")[0]);
-        $( "#page_view2 input" ).val(gListVstring[gDefaultValue[1]].split(" ")[0]);
-        eval( '$( "#page_view3 label:eq(' + gDefaultValue[2] + ')" ).toggleClass("active")' );  
-        eval( '$( "#page_view4 label:eq(' + gDefaultValue[3] + ')" ).toggleClass("active")' );  
-        eval( '$( "#page_view5 label:eq(' + gDefaultValue[4] + ')" ).toggleClass("active")' );  
+    funcSetDefault: function () {
+        $("#page_view1 input").val(gListHstring[gDefaultValue[0]].split(" ")[0]);
+        $("#page_view2 input").val(gListVstring[gDefaultValue[1]].split(" ")[0]);
+        eval('$( "#page_view3 label:eq(' + gDefaultValue[2] + ')" ).toggleClass("active")');
+        eval('$( "#page_view4 label:eq(' + gDefaultValue[3] + ')" ).toggleClass("active")');
+        eval('$( "#page_view5 label:eq(' + gDefaultValue[4] + ')" ).toggleClass("active")');
 
-        $( "#page_view3 input:radio[name=options-3][value='"+gListVsync[gDefaultValue[2]]+"']" ).attr("checked", true);
-        $( "#page_view4 input:radio[name=options-4][value='"+gListColor[gDefaultValue[3]]+"']" ).attr("checked", true);
-        $( "#page_view5 input:radio[name=options-5][value='"+gListPixEncFmt[gDefaultValue[4]]+"']" ).attr("checked", true);
+        $("#page_view3 input:radio[name=options-3][value='" + gListVsync[gDefaultValue[2]] + "']").attr("checked", true);
+        $("#page_view4 input:radio[name=options-4][value='" + gListColor[gDefaultValue[3]] + "']").attr("checked", true);
+        $("#page_view5 input:radio[name=options-5][value='" + gListPixEncFmt[gDefaultValue[4]] + "']").attr("checked", true);
 
-        gHtotal = $( "#page_view1 input" ).val();
-        gVtotal = $( "#page_view2 input" ).val();
-        gVsync = eval( '$( "#page_view3 label:eq(' + gDefaultValue[2] + ')" ).text().split(" ")[0]' );
-        gColorDepth = eval( '$( "#page_view4 label:eq(' + gDefaultValue[3] + ')" ).text().split(" ")[0]' );
-        gPixEncFmt = eval( '$( "#page_view5 label:eq(' + gDefaultValue[4] + ')" ).text().split(" ")[0]' );
+        gHtotal = $("#page_view1 input").val();
+        gVtotal = $("#page_view2 input").val();
+        gVsync = eval('$( "#page_view3 label:eq(' + gDefaultValue[2] + ')" ).text().split(" ")[0]');
+        gColorDepth = eval('$( "#page_view4 label:eq(' + gDefaultValue[3] + ')" ).text().split(" ")[0]');
+        gPixEncFmt = 1;
     },
 
 
-    funcPostInit: function() {
+    funcPostInit: function () {
 
-        $("#page_view1 li a").click(function () { 
+        $("#page_view1 li a").click(function () {
             var str = $(this).text().split(' ')[0];
-            $( "#page_view1 input" ).val(str);
-            $( "#page_view2 input" ).val(gListVstring[gHashItems[str]].split(" ")[0]);
+            $("#page_view1 input").val(str);
+            $("#page_view2 input").val(gListVstring[gHashItems[str]].split(" ")[0]);
         });
 
-        $("#page_view2 li a").click(function () { 
+        $("#page_view2 li a").click(function () {
             var str = $(this).text().split(' ')[0];
-            $( "#page_view2 input" ).val(str);
+            $("#page_view2 input").val(str);
         });
 
-        $("#page_view3 li a").click(function () { 
+        $("#page_view3 li a").click(function () {
             var str = $(this).text();
-            $( "input:radio[name=options-3][value='"+str+"']" ).attr("checked", true);
-            $( "input:radio[name=options-3][value!='"+str+"']" ).attr("checked", false);
-            eval( '$( "#page_view3 label" ).removeClass("active")' ); 
-            eval( '$( "#page_view3 label:eq(' + gHashItems[str] + ')" ).addClass("active")' ); 
+            $("input:radio[name=options-3][value='" + str + "']").attr("checked", true);
+            $("input:radio[name=options-3][value!='" + str + "']").attr("checked", false);
+            eval('$( "#page_view3 label" ).removeClass("active")');
+            eval('$( "#page_view3 label:eq(' + gHashItems[str] + ')" ).addClass("active")');
         });
 
-        $("#page_view3 label").click(function () { 
+        $("#page_view3 label").click(function () {
             var str = $(this).text();
-            $( "input:radio[name=options-3][value='"+str+"']" ).attr("checked", true);
-            $( "input:radio[name=options-3][value!='"+str+"']" ).attr("checked", false);
-            eval( '$( "#page_view3 label" ).removeClass("active")' ); 
-            eval( '$( "#page_view3 label:eq(' + gHashItems[str] + ')" ).addClass("active")' ); 
-        });
-
-
-        $("#page_view4 li a").click(function () { 
-            var str = $(this).text();
-            $( "input:radio[name=options-4][value='"+str+"']" ).attr("checked", true);
-            $( "input:radio[name=options-4][value!='"+str+"']" ).attr("checked", false);
-            eval( '$( "#page_view4 label" ).removeClass("active")' ); 
-            eval( '$( "#page_view4 label:eq(' + gHashItems[str] + ')" ).addClass("active")' ); 
+            $("input:radio[name=options-3][value='" + str + "']").attr("checked", true);
+            $("input:radio[name=options-3][value!='" + str + "']").attr("checked", false);
+            eval('$( "#page_view3 label" ).removeClass("active")');
+            eval('$( "#page_view3 label:eq(' + gHashItems[str] + ')" ).addClass("active")');
         });
 
 
-        $("#page_view4 label").click(function () { 
+        $("#page_view4 li a").click(function () {
             var str = $(this).text();
-            $( "input:radio[name=options-4][value='"+str+"']" ).attr("checked", true);
-            $( "input:radio[name=options-4][value!='"+str+"']" ).attr("checked", false);
-            eval( '$( "#page_view4 label" ).removeClass("active")' ); 
-            eval( '$( "#page_view4 label:eq(' + gHashItems[str] + ')" ).addClass("active")' ); 
+            $("input:radio[name=options-4][value='" + str + "']").attr("checked", true);
+            $("input:radio[name=options-4][value!='" + str + "']").attr("checked", false);
+            eval('$( "#page_view4 label" ).removeClass("active")');
+            eval('$( "#page_view4 label:eq(' + gHashItems[str] + ')" ).addClass("active")');
         });
 
 
-        $("#page_view5 li a").click(function () { 
+        $("#page_view4 label").click(function () {
             var str = $(this).text();
-            $( "input:radio[name=options-5][value='"+str+"']" ).attr("checked", true);
-            $( "input:radio[name=options-5][value!='"+str+"']" ).attr("checked", false);
-            eval( '$( "#page_view5 label" ).removeClass("active")' ); 
-            eval( '$( "#page_view5 label:eq(' + gHashItems[str] + ')" ).addClass("active")' ); 
+            $("input:radio[name=options-4][value='" + str + "']").attr("checked", true);
+            $("input:radio[name=options-4][value!='" + str + "']").attr("checked", false);
+            eval('$( "#page_view4 label" ).removeClass("active")');
+            eval('$( "#page_view4 label:eq(' + gHashItems[str] + ')" ).addClass("active")');
         });
 
 
-        $("#page_view5 label").click(function () { 
+        $("#page_view5 li a").click(function () {
             var str = $(this).text();
-            $( "input:radio[name=options-5][value='"+str+"']" ).attr("checked", true);
-            $( "input:radio[name=options-5][value!='"+str+"']" ).attr("checked", false);
-            eval( '$( "#page_view5 label" ).removeClass("active")' ); 
-            eval( '$( "#page_view5 label:eq(' + gHashItems[str] + ')" ).addClass("active")' ); 
+            $("input:radio[name=options-5][value='" + str + "']").attr("checked", true);
+            $("input:radio[name=options-5][value!='" + str + "']").attr("checked", false);
+            eval('$( "#page_view5 label" ).removeClass("active")');
+            eval('$( "#page_view5 label:eq(' + gHashItems[str] + ')" ).addClass("active")');
+        });
+
+
+        $("#page_view5 label").click(function () {
+            var str = $(this).text();
+            $("input:radio[name=options-5][value='" + str + "']").attr("checked", true);
+            $("input:radio[name=options-5][value!='" + str + "']").attr("checked", false);
+            eval('$( "#page_view5 label" ).removeClass("active")');
+            eval('$( "#page_view5 label:eq(' + gHashItems[str] + ')" ).addClass("active")');
         });
     },
 
 
-    funcCalculateIt: function() {
+    funcCalculateIt: function () {
 
         var panelWord = "";
 
-        gHtotal = $( "#page_view1 input" ).val();
-        if(!gHtotal)
-        {
+        gHtotal = $("#page_view1 input").val();
+        if (!gHtotal) {
             alert('H Total을 입력해주세요!');
-            $( "#page_view1 input" ).focus();
+            $("#page_view1 input").focus();
             return;
         }
 
-        gVtotal = $( "#page_view2 input" ).val();
-        if(!gVtotal)
-        {
+        gVtotal = $("#page_view2 input").val();
+        if (!gVtotal) {
             alert('V Total을 입력해주세요!');
-            $( "#page_view2 input" ).focus();
+            $("#page_view2 input").focus();
             return;
         }
 
-        gVsync = $( "#page_view3 input:radio[name=options-3][checked]" ).val().split(" ")[0];
-        gColorDepth = $( "#page_view4 input:radio[name=options-4][checked]" ).val().split(" ")[0];
-        gPixEncFmt = $( "#page_view5 input:radio[name=options-5][checked]" ).val().split(" ")[0];
+        gVsync = $("#page_view3 input:radio[name=options-3][checked]").val().split(" ")[0];
+        gColorDepth = $("#page_view4 input:radio[name=options-4][checked]").val().split(" ")[0];
+
+        var inputStr5 = $("#page_view5 input:radio[name=options-5][checked]").val();
+        if (inputStr5 == "4:2:0") {
+            gPixEncFmt = 0.5;
+        }
+        else if (inputStr5 == "4:2:2") {
+            gPixEncFmt = 0.75;
+        }
+        else {
+            gPixEncFmt = 1;
+        }
 
         var pixelFreq = gHtotal * gVtotal * gVsync;
         panelWord = panelWord + "<b>Pixel Color(Pixel Freq)</b><br>" + pixelFreq.format() + " Hz <br><br>";
@@ -268,21 +275,21 @@ var appB = {
         panelWord = panelWord + "<b>Total bit rate required</b><br>" + tBitRate.format() + " bps<br><br>"
 
         var laneCalc = tBitRate / 5400000000;
-        panelWord = panelWord + "<b>Lane Calculation</b><br>" + laneCalc.format() + " lane<br><br>"        
+        panelWord = panelWord + "<b>Lane Calculation</b><br>" + laneCalc.format() + " lane<br><br>"
 
         var laneReq = Math.ceil(tBitRate / 5400000000);
         panelWord = panelWord + "<b>Required # of lane in calculation</b><br>" + laneReq.format() + " lane<br><br>"
 
-        var laneReal = ((laneReq%2)?laneReq+1:laneReq);
+        var laneReal = ((laneReq % 2) ? laneReq + 1 : laneReq);
         panelWord = panelWord + "<b>Required # of lane in real</b><br>" + laneReal.format() + " lane<br><br>"
 
         var laneReqLG = Math.ceil(tBitRate / 5400000000);
         panelWord = panelWord + "<b>Required # of lane in calculation(LGE)</b><br>" + laneReqLG.format() + " lane<br><br>"
 
-        var laneRealLG = ((laneReqLG%2)?laneReqLG+1:laneReqLG);
+        var laneRealLG = ((laneReqLG % 2) ? laneReqLG + 1 : laneReqLG);
         panelWord = panelWord + "<b>Required # of lane in real(LGE)</b><br>" + laneRealLG.format() + " lane<br><br>"
 
-        $( "#page_view7 .panel-body" ).html(panelWord);
+        $("#page_view8 .panel-body").html(panelWord);
     }
 
 };
