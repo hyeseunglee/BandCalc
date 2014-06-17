@@ -258,7 +258,7 @@ var appB = {
             gPixEncFmt = 0.5;
         }
         else if (inputStr5 == "4:2:2") {
-            gPixEncFmt = 0.75;
+            gPixEncFmt = 0.67;
         }
         else {
             gPixEncFmt = 1;
