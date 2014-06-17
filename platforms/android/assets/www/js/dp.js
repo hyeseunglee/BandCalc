@@ -308,10 +308,10 @@ var appB = {
         var pixelFreq = gHtotal * gVtotal * gVsync;
         panelWord = panelWord + "<b>Pixel Color(Pixel Freq)</b><br>" + pixelFreq.format() + " Hz <br><br>";
 
-        var tVideoRate = pixelFreq * (gColorDepth * 3);
-        panelWord = panelWord + "<b>Total video data rate(Payload)</b><br>" + tVideoRate.format() + " bps<br><br>";
+        var tVideoRate = pixelFreq * (gColorDepth / 8);
+        //panelWord = panelWord + "<b>Total video data rate(Payload)</b><br>" + tVideoRate.format() + " bps<br><br>";
 
-        var tBitRate = gPixEncFmt * tVideoRate * (gColorDepth / 8) * gCompression;
+        var tBitRate = tVideoRate * 30 * gPixEncFmt * gCompression;
         panelWord = panelWord + "<b>Total bit rate required</b><br>" + tBitRate.format() + " bps<br><br>"
 
         var laneCalc = tBitRate / 5400000000;
