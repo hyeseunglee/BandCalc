@@ -288,10 +288,10 @@ var appB = {
 
         var inputStr5 = $("#page_view5 input:radio[name=options-5][checked]").val();
         if (inputStr5 == "4:2:0") {
-            gPixEncFmt = 0.5;
+            gPixEncFmt = 1/2;
         }
         else if (inputStr5 == "4:2:2") {
-            gPixEncFmt = 0.67;
+            gPixEncFmt = 2/3;
         }
         else {
             gPixEncFmt = 1;
@@ -299,7 +299,7 @@ var appB = {
 
         var inputStr6 = $("#page_view6 input:radio[name=options-6][checked]").val();
         if (inputStr6 == "O") {
-            gCompression = 0.33;
+            gCompression = 1/3;
         }
         else {
             gCompression = 1;
