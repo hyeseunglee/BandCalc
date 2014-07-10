@@ -10,9 +10,9 @@
     <feature name="Vibration">
         <param name="android-package" value="org.apache.cordova.vibration.Vibration" />
     </feature>
-    <name>Hyeseung_BandCalc</name>
+    <name>BandCalc_ADT</name>
     <description>
-        To Calculate Bandwidth of High speed Interfaces(VbyOne, DisplayPort, HS-LVDS).
+        To Calculate Bandwidth of High speed Interfaces(VbyOne, DisplayPort, HS-LVDS, HDMI, EPI).
     </description>
     <author email="support@phonegap.com" href="http://phonegap.com">
         PhoneGap Team

@@ -6,10 +6,10 @@
         id        = "com.phonegap.helloworld"
         version   = "1.0.0">
 
-    <name>Hyeseung_BandCalc</name>
+    <name>BandCalc_ADT</name>
 
     <description>
-        To Calculate Bandwidth of High speed Interfaces(VbyOne, DisplayPort, HS-LVDS).
+        To Calculate Bandwidth of High speed Interfaces(VbyOne, DisplayPort, HS-LVDS, HDMI, EPI).
     </description>
 
     <author href="http://phonegap.com" email="support@phonegap.com">
