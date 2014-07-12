@@ -258,29 +258,53 @@ var appB = {
         gColorDepth = $( "#page_view4 input:radio[name=options-4][checked]" ).val().split(" ")[0];
         gByteMode = $( "#page_view5 input:radio[name=options-5][checked]" ).val().split(" ")[0];
 
+        //PixelFreq/////////////////////////////////////////////////////////////////////////////////////////////////
         var pixelFreq = gHtotal * gVtotal * gVsync;
-        panelWord = panelWord + "<b>Pixel Color(Pixel Freq)</b><br>" + pixelFreq.format() + " Hz <br><br>";
 
+        var pixelFreqType;
+        if (pixelFreq >= 1000 && pixelFreq < 1000000) pixelFreqType = (pixelFreq / 1000.0) + 'K';
+        if (pixelFreq >= 1000000 && pixelFreq < 1000000000) pixelFreqType = (pixelFreq / 1000000.0) + 'M';
+        if (pixelFreq >= 1000000000 && pixelFreq < 1000000000000) pixelFreqType = (pixelFreq / 1000000000.0) + 'G';
+
+        panelWord = panelWord + "<b>Pixel Color(Pixel Freq)</b><br>" + pixelFreqType.fontcolor("Red") + "Hz <br><br>";
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //VideoRate/////////////////////////////////////////////////////////////////////////////////////////////////
         var tVideoRate = pixelFreq * gColorDepth * 3;
-        panelWord = panelWord + "<b>Total video data rate(Payload)</b><br>" + tVideoRate.format() + " bps<br><br>";
 
+        var tVideoRateType;
+        if (tVideoRate >= 1000 && tVideoRate < 1000000) tVideoRateType = (tVideoRate / 1000.0) + 'K';
+        if (tVideoRate >= 1000000 && tVideoRate < 1000000000) tVideoRateType = (tVideoRate / 1000000.0) + 'M';
+        if (tVideoRate >= 1000000000 && tVideoRate < 1000000000000) tVideoRateType = (tVideoRate / 1000000000.0) + 'G';
+
+        //panelWord = panelWord + "<b>Total video data rate(Payload)</b><br>" + tVideoRateType + "bps<br><br>";
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //BitRate///////////////////////////////////////////////////////////////////////////////////////////////////
         var tBitRate = gByteMode * 8 * 10 / 8 * pixelFreq;
-        panelWord = panelWord + "<b>Total bit rate required</b><br>" + tBitRate.format() + " bps<br><br>"
+
+        var tBitRateType;
+        if (tBitRate >= 1000 && tBitRate < 1000000) tBitRateType = (tBitRate / 1000.0) + 'K';
+        if (tBitRate >= 1000000 && tBitRate < 1000000000) tBitRateType = (tBitRate / 1000000.0) + 'M';
+        if (tBitRate >= 1000000000 && tBitRate < 1000000000000) tBitRateType = (tBitRate / 1000000000.0) + 'G';
+
+        panelWord = panelWord + "<b><u>Total bit rate required</u></b><br>" + tBitRateType.fontcolor("Red") + "bps<br><br>"
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         var laneCalc = tBitRate / 3200000000;
-        panelWord = panelWord + "<b>Lane Calculation</b><br>" + laneCalc.format() + " lane<br><br>"        
+        panelWord = panelWord + "<b>Lane Calculation</b><br>" + laneCalc.format() + "Lane<br><br>"        
 
         var laneReq = Math.ceil(tBitRate / 3200000000);
-        panelWord = panelWord + "<b>Required # of lane in calculation</b><br>" + laneReq.format() + " lane<br><br>"
+        panelWord = panelWord + "<b>Required # of lane in calculation</b><br>" + laneReq.format() + "Lane<br><br>"
 
         var laneReal = ((laneReq%2)?laneReq+1:laneReq);
-        panelWord = panelWord + "<b>Required # of lane in real</b><br>" + laneReal.format() + " lane<br><br>"
+        panelWord = panelWord + "<b>Required # of lane in real</b><br>" + laneReal.format() + "Lane<br><br>"
 
         var laneReqLG = Math.ceil(tBitRate / 2970000000);
-        panelWord = panelWord + "<b>Required # of lane in calculation(LGE)</b><br>" + laneReqLG.format() + " lane<br><br>"
+        panelWord = panelWord + "<b>Required # of lane in calculation(LGE)</b><br>" + laneReqLG.format() + "Lane<br><br>"
 
         var laneRealLG = ((laneReqLG%2)?laneReqLG+1:laneReqLG);
-        panelWord = panelWord + "<b>Required # of lane in real(LGE)</b><br>" + laneRealLG.format() + " lane<br><br>"
+        panelWord = panelWord + "<b><u>Required # of lane in real(LGE)</u></b><br>" + laneRealLG.format().fontcolor("Red") + "Lane<br><br>"
 
         $( "#page_view7 .panel-body" ).html(panelWord);
     }

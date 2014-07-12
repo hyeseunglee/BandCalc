@@ -15,7 +15,7 @@
         To Calculate Bandwidth of High speed Interfaces(VbyOne, DisplayPort, HS-LVDS, HDMI, EPI).
     </description>
     <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+        ADT(Advanced Display Technology) Part
     </author>
     <feature name="http://api.phonegap.com/1.0/device" />
     <preference name="permissions" value="none" />

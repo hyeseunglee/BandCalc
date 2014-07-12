@@ -1,0 +1,121 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->       
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <title>BandCalc</title>
+
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.2.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.10.4.custom.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+        <script type="text/javascript" src="js/jquery-1.11.1.min.js" ></script>
+        <script type="text/javascript" src="js/jquery.mobile-1.4.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.10.4.custom.min.js"></script> 
+        <script type="text/javascript" src="phonegap.js"></script>
+        <script type="text/javascript" src="js/interface.js"></script>       
+        <script type="text/javascript">
+            var nua = navigator.userAgent
+            var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1)
+            if (isAndroid) {
+                $('select.form-control').removeClass('form-control').css('width', '100%')
+            }
+        </script>        
+        <script type="text/javascript">
+            $(window).ready(function () {
+                app.initialize();
+            });            
+        </script> 
+    </head> 
+    
+     <body> 
+        <div data-role="page" id="home" align="center">
+            <div data-role="header" data-position="fixed" data-theme="b">
+                <h1>BandCalc</h1>
+                <a href="#" class="ui-btn-right" onClick="onExitSelect()">&nbsp;종료&nbsp;</a>
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="index.html" rel="external">HOME</a></li>
+                        <li><a href="interface.html">Interfaces</a></li>
+                        <li><a href="#" rel="external">&nbsp;</a></li>
+                    </ul>
+                </div><!-- /navbar -->
+            </div>
+
+            <div data-role="content" data-position="fixed">
+                <div id="page_view1" class="container">
+                    <div class="row">
+                        <div class="col-xs-12">&nbsp;</div>
+                    </div>                
+                    <div class="row">
+                        <div class="col-xs-1">&nbsp;</div>
+                        <div class="col-xs-10">
+                            <button type="button" class="btn btn-default btn-lg btn-block" onClick="app.funcInformDP();">DP</button>
+                        </div>
+                        <div class="col-xs-1">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1">&nbsp;</div>
+                        <div class="col-xs-10">
+                            <button type="button" class="btn btn-default btn-lg btn-block" onClick="app.funcInformDP();">DP</button>
+                        </div>
+                        <div class="col-xs-1">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1">&nbsp;</div>
+                        <div class="col-xs-10">
+                            <button type="button" class="btn btn-default btn-lg btn-block" onClick="app.funcInformDP();">DP</button>
+                        </div>
+                        <div class="col-xs-1">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1">&nbsp;</div>
+                        <div class="col-xs-10">
+                            <button type="button" class="btn btn-default btn-lg btn-block" onClick="app.funcInformDP();">DP</button>
+                        </div>
+                        <div class="col-xs-1">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">&nbsp;</div>
+                    </div>    
+                    <div class="row">
+                        <div class="col-xs-12">&nbsp;</div>
+                    </div>
+                </div>                         
+
+                <div id="page_view2" class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                                Result
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">&nbsp;</div>
+                    </div>            
+                </div>
+            </div>
+
+            <div data-role="footer" data-position="fixed" data-id="oneFooter" data-theme="b">
+                <span class="footerText">Copyright 2014. ADT&trade; all rights reserved.</span>
+            </div>
+        </div> 
+    </body>
+</html>

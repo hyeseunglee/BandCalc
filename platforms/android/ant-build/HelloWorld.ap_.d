@@ -23,6 +23,7 @@ D:\JavaProject\Github\BandCalc\platforms\android\assets\www\hslvds.html \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\icon.png \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\img \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\index.html \
+D:\JavaProject\Github\BandCalc\platforms\android\assets\www\interface.html \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\phonegap.js \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\plugins \
@@ -68,6 +69,7 @@ D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js\dp.js \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js\hdmi.js \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js\hslvds.js \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js\index.js \
+D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js\interface.js \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js\jquery-1.11.1.min.js \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js\jquery.mobile-1.4.2.min.js \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js\prototype.js \

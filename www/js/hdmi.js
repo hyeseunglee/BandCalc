@@ -20,15 +20,15 @@ var gColorDepth;
 var gPixEncFmt;
 
 
-Number.prototype.format = function(){
-    if(this==0) return 0;
- 
+Number.prototype.format = function () {
+    if (this == 0) return 0;
+    
     var reg = /(^[+-]?\d+)(\d{3})/;
     var n = (this + '');
  
     while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
- 
-    return n;
+
+    return n;
 };
  
 String.prototype.format = function(){
@@ -255,38 +255,62 @@ var appB = {
 
         var inputStr5 = $("#page_view5 input:radio[name=options-5][checked]").val();
         if (inputStr5 == "4:2:0") {
-            gPixEncFmt = 1/2;
+            gPixEncFmt = 1 / 2;
         }
         else if (inputStr5 == "4:2:2") {
-            gPixEncFmt = 2/3;
+            gPixEncFmt = 2 / 3;
         }
         else {
             gPixEncFmt = 1;
         }
 
+        //PixelFreq/////////////////////////////////////////////////////////////////////////////////////////////////
         var pixelFreq = gHtotal * gVtotal * gVsync;
-        panelWord = panelWord + "<b>Pixel Color(Pixel Freq)</b><br>" + pixelFreq.format() + " Hz <br><br>";
 
+        var pixelFreqType;
+        if (pixelFreq >= 1000 && pixelFreq < 1000000) pixelFreqType = (pixelFreq / 1000.0) + 'K';
+        if (pixelFreq >= 1000000 && pixelFreq < 1000000000) pixelFreqType = (pixelFreq / 1000000.0) + 'M';
+        if (pixelFreq >= 1000000000 && pixelFreq < 1000000000000) pixelFreqType = (pixelFreq / 1000000000.0) + 'G';
+
+        panelWord = panelWord + "<b>Pixel Color(Pixel Freq)</b><br>" + pixelFreqType.fontcolor("Red") + "Hz <br><br>";
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //VideoRate/////////////////////////////////////////////////////////////////////////////////////////////////
         var tVideoRate = pixelFreq * (gColorDepth / 8);
-        //panelWord = panelWord + "<b>Total video data rate(Payload)</b><br>" + tVideoRate.format() + " bps<br><br>";
 
+        var tVideoRateType;
+        if (tVideoRate >= 1000 && tVideoRate < 1000000) tVideoRateType = (tVideoRate / 1000.0) + 'K';
+        if (tVideoRate >= 1000000 && tVideoRate < 1000000000) tVideoRateType = (tVideoRate / 1000000.0) + 'M';
+        if (tVideoRate >= 1000000000 && tVideoRate < 1000000000000) tVideoRateType = (tVideoRate / 1000000000.0) + 'G';
+
+        //panelWord = panelWord + "<b>Total video data rate(Payload)</b><br>" + tVideoRateType + "bps<br><br>";
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //BitRate///////////////////////////////////////////////////////////////////////////////////////////////////
         var tBitRate = tVideoRate * 30 * gPixEncFmt;
-        panelWord = panelWord + "<b>Total bit rate required</b><br>" + tBitRate.format() + " bps<br><br>"
+
+        var tBitRateType;
+        if (tBitRate >= 1000 && tBitRate < 1000000) tBitRateType = (tBitRate / 1000.0) + 'K';
+        if (tBitRate >= 1000000 && tBitRate < 1000000000) tBitRateType = (tBitRate / 1000000.0) + 'M';
+        if (tBitRate >= 1000000000 && tBitRate < 1000000000000) tBitRateType = (tBitRate / 1000000000.0) + 'G';
+
+        panelWord = panelWord + "<b><u>Total bit rate required</u></b><br>" + tBitRateType.fontcolor("red") + "bps<br><br>"
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         var laneCalc = tBitRate / 18000000000;
         panelWord = panelWord + "<b>Lane Calculation</b><br>" + laneCalc.format() + " lane<br><br>"
 
         var laneReq = Math.ceil(tBitRate / 18000000000);
-        panelWord = panelWord + "<b><font color="red">Required # of lane in calculation</font></b><br>" + laneReq.format() + " lane<br><br>"
+        panelWord = panelWord + "<b>Required # of lane in calculation</b><br>" + laneReq.format() + "Lane<br><br>"
 
         var laneReal = ((laneReq % 2) ? laneReq + 1 : laneReq);
-        panelWord = panelWord + "<b>Required # of lane in real</b><br>" + laneReal.format() + " lane<br><br>"
+        panelWord = panelWord + "<b>Required # of lane in real</b><br>" + laneReal.format() + "Lane<br><br>"
 
         var laneReqLG = Math.ceil(tBitRate / 18000000000);
-        panelWord = panelWord + "<b>Required # of lane in calculation(LGE)</b><br>" + laneReqLG.format() + " lane<br><br>"
+        panelWord = panelWord + "<b>Required # of lane in calculation(LGE)</b><br>" + laneReqLG.format() + "Lane<br><br>"
 
         var laneRealLG = ((laneReqLG % 2) ? laneReqLG + 1 : laneReqLG);
-        panelWord = panelWord + "<b><font color="red">Required # of lane in real(LGE)</font></b><br>" + laneRealLG.format() + " lane<br><br>"
+        panelWord = panelWord + "<b><u>Required # of lane in real(LGE)</u></b><br>" + laneRealLG.format().fontcolor("red") + "Lane<br><br>"
 
         $("#page_view7 .panel-body").html(panelWord);
     }
