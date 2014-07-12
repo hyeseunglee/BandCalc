@@ -47,26 +47,25 @@ var app = {
     funcInformDP: function () {
         var panelWord = "DP";
 
-        alert(panelWord);
-        //$("#page_view2.panel-body").html(panelWord);
+        $("#page_view2 .panel-body").html(panelWord);
     },
 
     funcInformHSLVDS: function () {
         var panelWord = "HS-LVDS";
 
-        //$("#page_view2.panel-body").html(panelWord);
+        $("#page_view2 .panel-body").html(panelWord);
     },
 
     funcInformVbyOne: function () {
         var panelWord = "Vx1";
 
-        //$("#page_view2.panel-body").html(panelWord);
+        $("#page_view2 .panel-body").html(panelWord);
     },
 
     funcInformHDMI: function () {
         var panelWord = "HDMI";
 
-        //$("#page_view2.panel-body").html(panelWord);
+        $("#page_view2 .panel-body").html(panelWord);
     },
 };
 

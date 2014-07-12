@@ -301,13 +301,13 @@ var appB = {
         panelWord = panelWord + "<b>Lane Calculation</b><br>" + laneCalc.format() + " lane<br><br>"
 
         var laneReq = Math.ceil(tBitRate / 18000000000);
-        panelWord = panelWord + "<b>Required # of lane in calculation</b><br>" + laneReq.format() + "Lane<br><br>"
+        //panelWord = panelWord + "<b>Required # of lane in calculation</b><br>" + laneReq.format() + "Lane<br><br>"
 
         var laneReal = ((laneReq % 2) ? laneReq + 1 : laneReq);
-        panelWord = panelWord + "<b>Required # of lane in real</b><br>" + laneReal.format() + "Lane<br><br>"
+        //panelWord = panelWord + "<b>Required # of lane in real</b><br>" + laneReal.format() + "Lane<br><br>"
 
         var laneReqLG = Math.ceil(tBitRate / 18000000000);
-        panelWord = panelWord + "<b>Required # of lane in calculation(LGE)</b><br>" + laneReqLG.format() + "Lane<br><br>"
+        //panelWord = panelWord + "<b>Required # of lane in calculation(LGE)</b><br>" + laneReqLG.format() + "Lane<br><br>"
 
         var laneRealLG = ((laneReqLG % 2) ? laneReqLG + 1 : laneReqLG);
         panelWord = panelWord + "<b><u>Required # of lane in real(LGE)</u></b><br>" + laneRealLG.format().fontcolor("red") + "Lane<br><br>"
