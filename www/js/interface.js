@@ -45,25 +45,30 @@ var app = {
     },
 
     funcInformDP: function () {
-        var panelWord = "DP";
+        var panelWord = "<b>DP(DisplayPort)</b><br>";
+
+        panelWord = panelWord + "-정의 :  VESA(Video Electronics Standards Association)에 의해 제정된 디지털 디스플레이 인터페이스 표준<br>"
+        panelWord = panelWord + "-용도 :  비디오 소스를 컴퓨터 모니터와 같은 디스플레이 장치에 전송<br>"
+        panelWord = panelWord + "-버전 :  1.2까지 승인되었음(2009.12.22)<br>"
+        panelWord = panelWord + "<t></t><br>"
 
         $("#page_view2 .panel-body").html(panelWord);
     },
 
     funcInformHSLVDS: function () {
-        var panelWord = "HS-LVDS";
+        var panelWord = "<b>HS-LVDS</b>";
 
         $("#page_view2 .panel-body").html(panelWord);
     },
 
     funcInformVbyOne: function () {
-        var panelWord = "Vx1";
+        var panelWord = "<b>Vx1</b>";
 
         $("#page_view2 .panel-body").html(panelWord);
     },
 
     funcInformHDMI: function () {
-        var panelWord = "HDMI";
+        var panelWord = "<b>HDMI</b>";
 
         $("#page_view2 .panel-body").html(panelWord);
     },
