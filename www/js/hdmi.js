@@ -9,15 +9,17 @@ var gListVblank = new Array("45", "20", "90", "75", "180");
 var gListVsync = new Array("30 Hz", "60 Hz", "120 Hz" );
 var gListColor = new Array("8 Bit", "10 Bit", "12 Bit" );
 var gListPixEncFmt = new Array("4:2:0", "4:2:2", "4:4:4");
+var gListVersion = new Array("v1.4", "v2.0", "v2.1");
 
 var gHashItems = new Array();
-var gDefaultValue = new Array(4, 4, 2, 1, 2);     //VSync, Color Depth, Pixel Encoding
+var gDefaultValue = new Array(4, 4, 2, 1, 2, 1);     //VSync, Color Depth, Pixel Encoding, Version
 
 var gHtotal;
 var gVtotal;
 var gVsync;
 var gColorDepth;
 var gPixEncFmt;
+var gVersion;
 
 
 Number.prototype.format = function () {
@@ -94,6 +96,7 @@ var appB = {
             gHashItems[gListVsync[i]] = i;
             gHashItems[gListColor[i]] = i;
             gHashItems[gListPixEncFmt[i]] = i;
+            gHashItems[gListVersion[i]] = i;
         }
     },
 
@@ -142,6 +145,10 @@ var appB = {
             $("#page_view5 ul").append('<li><a href="#">' + gListPixEncFmt[i] + '</a></li>');
             $("#page_view5 label:eq(" + i + ")").append('<input type="radio" name="options-5">').append(gListPixEncFmt[i]);
             $("#page_view5 input:eq(" + i + ")").attr('value', gListPixEncFmt[i]);
+
+            $("#page_view6 ul").append('<li><a href="#">' + gListVersion[i] + '</a></li>');
+            $("#page_view6 label:eq(" + i + ")").append('<input type="radio" name="options-6">').append(gListVersion[i]);
+            $("#page_view6 input:eq(" + i + ")").attr('value', gListVersion[i]);
         }
     },
 
@@ -152,16 +159,19 @@ var appB = {
         eval('$( "#page_view3 label:eq(' + gDefaultValue[2] + ')" ).toggleClass("active")');
         eval('$( "#page_view4 label:eq(' + gDefaultValue[3] + ')" ).toggleClass("active")');
         eval('$( "#page_view5 label:eq(' + gDefaultValue[4] + ')" ).toggleClass("active")');
+        eval('$( "#page_view6 label:eq(' + gDefaultValue[5] + ')" ).toggleClass("active")');
 
         $("#page_view3 input:radio[name=options-3][value='" + gListVsync[gDefaultValue[2]] + "']").attr("checked", true);
         $("#page_view4 input:radio[name=options-4][value='" + gListColor[gDefaultValue[3]] + "']").attr("checked", true);
         $("#page_view5 input:radio[name=options-5][value='" + gListPixEncFmt[gDefaultValue[4]] + "']").attr("checked", true);
+        $("#page_view6 input:radio[name=options-6][value='" + gListVersion[gDefaultValue[5]] + "']").attr("checked", true);
 
         gHtotal = $("#page_view1 input").val();
         gVtotal = $("#page_view2 input").val();
         gVsync = eval('$( "#page_view3 label:eq(' + gDefaultValue[2] + ')" ).text().split(" ")[0]');
         gColorDepth = eval('$( "#page_view4 label:eq(' + gDefaultValue[3] + ')" ).text().split(" ")[0]');
         gPixEncFmt = 1;
+        gVersion = 1;
     },
 
 
@@ -229,6 +239,23 @@ var appB = {
             eval('$( "#page_view5 label" ).removeClass("active")');
             eval('$( "#page_view5 label:eq(' + gHashItems[str] + ')" ).addClass("active")');
         });
+
+        $("#page_view6 li a").click(function () {
+            var str = $(this).text();
+            $("input:radio[name=options-6][value='" + str + "']").attr("checked", true);
+            $("input:radio[name=options-6][value!='" + str + "']").attr("checked", false);
+            eval('$( "#page_view6 label" ).removeClass("active")');
+            eval('$( "#page_view6 label:eq(' + gHashItems[str] + ')" ).addClass("active")');
+        });
+
+
+        $("#page_view6 label").click(function () {
+            var str = $(this).text();
+            $("input:radio[name=options-6][value='" + str + "']").attr("checked", true);
+            $("input:radio[name=options-6][value!='" + str + "']").attr("checked", false);
+            eval('$( "#page_view6 label" ).removeClass("active")');
+            eval('$( "#page_view6 label:eq(' + gHashItems[str] + ')" ).addClass("active")');
+        });
     },
 
 
@@ -264,6 +291,17 @@ var appB = {
             gPixEncFmt = 1;
         }
 
+        var inputStr6 = $("#page_view6 input:radio[name=options-6][checked]").val();
+        if (inputStr6 == "v1.4") {
+            gVersion = 10200000000;
+        }
+        else if (inputStr6 == "v2.0") {
+            gVersion = 18000000000;
+        }
+        else {
+            gVersion = 54000000000;
+        }
+
         //PixelFreq/////////////////////////////////////////////////////////////////////////////////////////////////
         var pixelFreq = gHtotal * gVtotal * gVsync;
 
@@ -297,22 +335,22 @@ var appB = {
         panelWord = panelWord + "<b><u>Total bit rate required</u></b><br>" + tBitRateType.fontcolor("red") + "bps<br><br>"
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        var laneCalc = tBitRate / 18000000000;
+        var laneCalc = tBitRate / gVersion;
         panelWord = panelWord + "<b>Lane Calculation</b><br>" + laneCalc.format() + " lane<br><br>"
 
-        var laneReq = Math.ceil(tBitRate / 18000000000);
+        var laneReq = Math.ceil(tBitRate / gVersion);
         //panelWord = panelWord + "<b>Required # of lane in calculation</b><br>" + laneReq.format() + "Lane<br><br>"
 
         var laneReal = ((laneReq % 2) ? laneReq + 1 : laneReq);
         //panelWord = panelWord + "<b>Required # of lane in real</b><br>" + laneReal.format() + "Lane<br><br>"
 
-        var laneReqLG = Math.ceil(tBitRate / 18000000000);
+        var laneReqLG = Math.ceil(tBitRate / gVersion);
         //panelWord = panelWord + "<b>Required # of lane in calculation(LGE)</b><br>" + laneReqLG.format() + "Lane<br><br>"
 
         var laneRealLG = ((laneReqLG % 2) ? laneReqLG + 1 : laneReqLG);
         panelWord = panelWord + "<b><u>Required # of lane in real(LGE)</u></b><br>" + laneRealLG.format().fontcolor("red") + "Lane<br><br>"
 
-        $("#page_view7 .panel-body").html(panelWord);
+        $("#page_view8 .panel-body").html(panelWord);
     }
 
 };
