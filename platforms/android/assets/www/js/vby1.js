@@ -9,15 +9,17 @@ var gListVblank = new Array("45", "20", "90", "75", "180");
 var gListVsync = new Array("30 Hz", "60 Hz", "120 Hz" );
 var gListColor = new Array("8 Bit", "10 Bit", "12 Bit" );
 var gListByteMode = new Array("3 Byte", "4 Byte", "5 Byte" );
+var gListPixEncFmt = new Array("4:2:0", "4:2:2", "4:4:4");
 
 var gHashItems = new Array();
-var gDefaultValue = new Array(4, 4, 2, 1, 1);     //VSync, Color Depth, Byte Mode
+var gDefaultValue = new Array(4, 4, 2, 1, 1, 2);     //VSync, Color Depth, Byte Mode, Pixel Encoding
 
 var gHtotal;
 var gVtotal;
 var gVsync;
 var gColorDepth;
 var gByteMode;
+var gPixEncFmt;
 
 
 Number.prototype.format = function(){
@@ -95,6 +97,7 @@ var appB = {
             gHashItems[gListVsync[i]] = i;
             gHashItems[gListColor[i]] = i;
             gHashItems[gListByteMode[i]] = i;
+            gHashItems[gListPixEncFmt[i]] = i;
         }
     },
 
@@ -143,6 +146,10 @@ var appB = {
             $( "#page_view5 ul" ).append('<li><a href="#">' + gListByteMode[i] + '</a></li>');
             $( "#page_view5 label:eq("+i+")" ).append('<input type="radio" name="options-5">').append(gListByteMode[i]);
             $( "#page_view5 input:eq("+i+")" ).attr('value', gListByteMode[i]);
+
+            $("#page_view6 ul").append('<li><a href="#">' + gListPixEncFmt[i] + '</a></li>');
+            $("#page_view6 label:eq(" + i + ")").append('<input type="radio" name="options-6">').append(gListPixEncFmt[i]);
+            $("#page_view6 input:eq(" + i + ")").attr('value', gListPixEncFmt[i]);
         }
 
     },
@@ -153,17 +160,20 @@ var appB = {
         $( "#page_view2 input" ).val(gListVstring[gDefaultValue[1]].split(" ")[0]);
         eval( '$( "#page_view3 label:eq(' + gDefaultValue[2] + ')" ).toggleClass("active")' );  
         eval( '$( "#page_view4 label:eq(' + gDefaultValue[3] + ')" ).toggleClass("active")' );  
-        eval( '$( "#page_view5 label:eq(' + gDefaultValue[4] + ')" ).toggleClass("active")' );  
+        eval( '$( "#page_view5 label:eq(' + gDefaultValue[4] + ')" ).toggleClass("active")' );   
+        eval('$( "#page_view6 label:eq(' + gDefaultValue[5] + ')" ).toggleClass("active")');
 
         $( "#page_view3 input:radio[name=options-3][value='"+gListVsync[gDefaultValue[2]]+"']" ).attr("checked", true);
         $( "#page_view4 input:radio[name=options-4][value='"+gListColor[gDefaultValue[3]]+"']" ).attr("checked", true);
         $( "#page_view5 input:radio[name=options-5][value='"+gListByteMode[gDefaultValue[4]]+"']" ).attr("checked", true);
+        $( "#page_view6 input:radio[name=options-6][value='" + gListPixEncFmt[gDefaultValue[5]] + "']").attr("checked", true);
 
         gHtotal = $( "#page_view1 input" ).val();
         gVtotal = $( "#page_view2 input" ).val();
         gVsync = eval( '$( "#page_view3 label:eq(' + gDefaultValue[2] + ')" ).text().split(" ")[0]' );
         gColorDepth = eval( '$( "#page_view4 label:eq(' + gDefaultValue[3] + ')" ).text().split(" ")[0]' );
         gByteMode = eval( '$( "#page_view5 label:eq(' + gDefaultValue[4] + ')" ).text().split(" ")[0]' );
+        gPixEncFmt = 1;
     },
 
 
@@ -231,6 +241,23 @@ var appB = {
             eval( '$( "#page_view5 label" ).removeClass("active")' ); 
             eval( '$( "#page_view5 label:eq(' + gHashItems[str] + ')" ).addClass("active")' ); 
         });
+
+        $("#page_view6 li a").click(function () { 
+            var str = $(this).text();
+            $( "input:radio[name=options-6][value='"+str+"']" ).attr("checked", true);
+            $( "input:radio[name=options-6][value!='"+str+"']" ).attr("checked", false);
+            eval( '$( "#page_view6 label" ).removeClass("active")' ); 
+            eval( '$( "#page_view6 label:eq(' + gHashItems[str] + ')" ).addClass("active")' ); 
+        });
+
+
+        $("#page_view6 label").click(function () { 
+            var str = $(this).text();
+            $( "input:radio[name=options-6][value='"+str+"']" ).attr("checked", true);
+            $( "input:radio[name=options-6][value!='"+str+"']" ).attr("checked", false);
+            eval( '$( "#page_view6 label" ).removeClass("active")' ); 
+            eval( '$( "#page_view6 label:eq(' + gHashItems[str] + ')" ).addClass("active")' ); 
+        });
     },
 
 
@@ -258,6 +285,17 @@ var appB = {
         gColorDepth = $( "#page_view4 input:radio[name=options-4][checked]" ).val().split(" ")[0];
         gByteMode = $( "#page_view5 input:radio[name=options-5][checked]" ).val().split(" ")[0];
 
+        var inputStr6 = $("#page_view6 input:radio[name=options-6][checked]").val();
+        if (inputStr6 == "4:2:0") {
+            gPixEncFmt = 1/2;
+        }
+        else if (inputStr6 == "4:2:2") {
+            gPixEncFmt = 2/3;
+        }
+        else {
+            gPixEncFmt = 1;
+        }
+
         //PixelFreq/////////////////////////////////////////////////////////////////////////////////////////////////
         var pixelFreq = gHtotal * gVtotal * gVsync;
 
@@ -270,7 +308,7 @@ var appB = {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //VideoRate/////////////////////////////////////////////////////////////////////////////////////////////////
-        var tVideoRate = pixelFreq * gColorDepth * 3;
+        var tVideoRate = pixelFreq * gColorDepth * 3 * gPixEncFmt;
 
         var tVideoRateType;
         if (tVideoRate >= 1000 && tVideoRate < 1000000) tVideoRateType = (tVideoRate / 1000.0) + 'K';
@@ -281,7 +319,7 @@ var appB = {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //BitRate///////////////////////////////////////////////////////////////////////////////////////////////////
-        var tBitRate = gByteMode * 8 * 10 / 8 * pixelFreq;
+        var tBitRate = gByteMode * 8 * 10 / 8 * pixelFreq * gPixEncFmt;
 
         var tBitRateType;
         if (tBitRate >= 1000 && tBitRate < 1000000) tBitRateType = (tBitRate / 1000.0) + 'K';
@@ -309,7 +347,7 @@ var appB = {
         var laneRealLG = ((laneReqLG%2)?laneReqLG+1:laneReqLG);
         panelWord = panelWord + "<b><u>Required # of lane in real(LGE)</u></b><br>" + laneRealLG.format().fontcolor("Red") + "Lane<br><br>"
 
-        $("#page_view7 .panel-body").html(panelWord);
+        $("#page_view8 .panel-body").html(panelWord);
     }
 
 };

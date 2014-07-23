@@ -1,12 +1,4 @@
 D:\JavaProject\Github\BandCalc\platforms\android\ant-build\classes.dex : \
-D:\JavaProject\Github\BandCalc\platforms\android\ant-build\classes\com\app\phonegapex\bandcalc\BandCalc.class \
-D:\JavaProject\Github\BandCalc\platforms\android\ant-build\classes\com\app\phonegapex\bandcalc\BuildConfig.class \
-D:\JavaProject\Github\BandCalc\platforms\android\ant-build\classes\com\app\phonegapex\bandcalc\HelloWorld.class \
-D:\JavaProject\Github\BandCalc\platforms\android\ant-build\classes\com\app\phonegapex\bandcalc\R$attr.class \
-D:\JavaProject\Github\BandCalc\platforms\android\ant-build\classes\com\app\phonegapex\bandcalc\R$drawable.class \
-D:\JavaProject\Github\BandCalc\platforms\android\ant-build\classes\com\app\phonegapex\bandcalc\R$string.class \
-D:\JavaProject\Github\BandCalc\platforms\android\ant-build\classes\com\app\phonegapex\bandcalc\R$xml.class \
-D:\JavaProject\Github\BandCalc\platforms\android\ant-build\classes\com\app\phonegapex\bandcalc\R.class \
 D:\JavaProject\Github\BandCalc\platforms\android\ant-build\classes\com\phonegap\helloworld\BuildConfig.class \
 D:\JavaProject\Github\BandCalc\platforms\android\ant-build\classes\com\phonegap\helloworld\HelloWorld.class \
 D:\JavaProject\Github\BandCalc\platforms\android\ant-build\classes\com\phonegap\helloworld\R$attr.class \

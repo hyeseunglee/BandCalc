@@ -7,17 +7,15 @@ var gListVactive = new Array("1080", "1080", "2160", "2160", "4320" );
 var gListVblank = new Array("45", "20", "90", "75", "180");
 
 var gListVsync = new Array("30 Hz", "60 Hz", "120 Hz" );
-var gListColor = new Array("8 Bit", "10 Bit", "12 Bit" );
-var gListByteMode = new Array("3 Byte", "4 Byte", "5 Byte" );
+var gListColor = new Array("8 Bit", "10 Bit");
 
 var gHashItems = new Array();
-var gDefaultValue = new Array(4, 4, 2, 1, 1);     //VSync, Color Depth, Byte Mode
+var gDefaultValue = new Array(4, 4, 2, 1);     //VSync, Color Depth, Byte Mode
 
 var gHtotal;
 var gVtotal;
 var gVsync;
 var gColorDepth;
-var gByteMode;
 
 
 Number.prototype.format = function(){
@@ -93,8 +91,11 @@ var appB = {
         for(var i=0; i<3; i++)
         {
             gHashItems[gListVsync[i]] = i;
+        }
+
+        for(var i=0; i<2; i++)
+        {
             gHashItems[gListColor[i]] = i;
-            gHashItems[gListByteMode[i]] = i;
         }
     },
 
@@ -135,14 +136,10 @@ var appB = {
             $( "#page_view3 input:eq("+i+")" ).attr('value', gListVsync[i]);
         }
 
-        for(var i=0; i<3; i++) {
+        for(var i=0; i<2; i++) {
             $( "#page_view4 ul" ).append('<li><a href="#">' + gListColor[i] + '</a></li>');
             $( "#page_view4 label:eq("+i+")" ).append('<input type="radio" name="options-4">').append(gListColor[i]);
             $( "#page_view4 input:eq("+i+")" ).attr('value', gListColor[i]);
-
-            $( "#page_view5 ul" ).append('<li><a href="#">' + gListByteMode[i] + '</a></li>');
-            $( "#page_view5 label:eq("+i+")" ).append('<input type="radio" name="options-5">').append(gListByteMode[i]);
-            $( "#page_view5 input:eq("+i+")" ).attr('value', gListByteMode[i]);
         }
 
     },
@@ -153,17 +150,14 @@ var appB = {
         $( "#page_view2 input" ).val(gListVstring[gDefaultValue[1]].split(" ")[0]);
         eval( '$( "#page_view3 label:eq(' + gDefaultValue[2] + ')" ).toggleClass("active")' );  
         eval( '$( "#page_view4 label:eq(' + gDefaultValue[3] + ')" ).toggleClass("active")' );  
-        eval( '$( "#page_view5 label:eq(' + gDefaultValue[4] + ')" ).toggleClass("active")' );  
 
         $( "#page_view3 input:radio[name=options-3][value='"+gListVsync[gDefaultValue[2]]+"']" ).attr("checked", true);
         $( "#page_view4 input:radio[name=options-4][value='"+gListColor[gDefaultValue[3]]+"']" ).attr("checked", true);
-        $( "#page_view5 input:radio[name=options-5][value='"+gListByteMode[gDefaultValue[4]]+"']" ).attr("checked", true);
 
         gHtotal = $( "#page_view1 input" ).val();
         gVtotal = $( "#page_view2 input" ).val();
         gVsync = eval( '$( "#page_view3 label:eq(' + gDefaultValue[2] + ')" ).text().split(" ")[0]' );
         gColorDepth = eval( '$( "#page_view4 label:eq(' + gDefaultValue[3] + ')" ).text().split(" ")[0]' );
-        gByteMode = eval( '$( "#page_view5 label:eq(' + gDefaultValue[4] + ')" ).text().split(" ")[0]' );
     },
 
 
@@ -213,24 +207,6 @@ var appB = {
             eval( '$( "#page_view4 label" ).removeClass("active")' ); 
             eval( '$( "#page_view4 label:eq(' + gHashItems[str] + ')" ).addClass("active")' ); 
         });
-
-
-        $("#page_view5 li a").click(function () { 
-            var str = $(this).text();
-            $( "input:radio[name=options-5][value='"+str+"']" ).attr("checked", true);
-            $( "input:radio[name=options-5][value!='"+str+"']" ).attr("checked", false);
-            eval( '$( "#page_view5 label" ).removeClass("active")' ); 
-            eval( '$( "#page_view5 label:eq(' + gHashItems[str] + ')" ).addClass("active")' ); 
-        });
-
-
-        $("#page_view5 label").click(function () { 
-            var str = $(this).text();
-            $( "input:radio[name=options-5][value='"+str+"']" ).attr("checked", true);
-            $( "input:radio[name=options-5][value!='"+str+"']" ).attr("checked", false);
-            eval( '$( "#page_view5 label" ).removeClass("active")' ); 
-            eval( '$( "#page_view5 label:eq(' + gHashItems[str] + ')" ).addClass("active")' ); 
-        });
     },
 
 
@@ -256,7 +232,6 @@ var appB = {
 
         gVsync = $( "#page_view3 input:radio[name=options-3][checked]" ).val().split(" ")[0];
         gColorDepth = $( "#page_view4 input:radio[name=options-4][checked]" ).val().split(" ")[0];
-        gByteMode = $( "#page_view5 input:radio[name=options-5][checked]" ).val().split(" ")[0];
 
         //PixelFreq/////////////////////////////////////////////////////////////////////////////////////////////////
         var pixelFreq = gHtotal * gVtotal * gVsync;
@@ -269,44 +244,79 @@ var appB = {
         panelWord = panelWord + "<b>Pixel Color(Pixel Freq)</b><br>" + pixelFreqType.fontcolor("Red") + "Hz <br><br>";
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        //VideoRate/////////////////////////////////////////////////////////////////////////////////////////////////
-        var tVideoRate = pixelFreq * gColorDepth * 3;
+        if(gColorDepth == 10)
+        {
+            //VideoRate/////////////////////////////////////////////////////////////////////////////////////////////////
+            var tVideoRate = pixelFreq * 7 * 5; // 7bit, RGB 30bit 5ch 
 
-        var tVideoRateType;
-        if (tVideoRate >= 1000 && tVideoRate < 1000000) tVideoRateType = (tVideoRate / 1000.0) + 'K';
-        if (tVideoRate >= 1000000 && tVideoRate < 1000000000) tVideoRateType = (tVideoRate / 1000000.0) + 'M';
-        if (tVideoRate >= 1000000000 && tVideoRate < 1000000000000) tVideoRateType = (tVideoRate / 1000000000.0) + 'G';
+            var tVideoRateType;
+            if (tVideoRate >= 1000 && tVideoRate < 1000000) tVideoRateType = (tVideoRate / 1000.0) + 'K';
+            if (tVideoRate >= 1000000 && tVideoRate < 1000000000) tVideoRateType = (tVideoRate / 1000000.0) + 'M';
+            if (tVideoRate >= 1000000000 && tVideoRate < 1000000000000) tVideoRateType = (tVideoRate / 1000000000.0) + 'G';
 
-        //panelWord = panelWord + "<b>Total video data rate(Payload)</b><br>" + tVideoRateType + "bps<br><br>";
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            panelWord = panelWord + "<b>Total video data rate(Payload)</b><br>" + tVideoRateType + "bps<br><br>";
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        //BitRate///////////////////////////////////////////////////////////////////////////////////////////////////
-        var tBitRate = gByteMode * 8 * 10 / 8 * pixelFreq;
+            // LVDS //
+            var laneCalcLVDS = tVideoRate / (74250000 * 7 * 5);
+            panelWord = panelWord + "====[LVDS]====<br>";
+            panelWord = panelWord + "<b>Lane Calculation</b><br>" + laneCalcLVDS.format() + "Lane<br><br>"        
 
-        var tBitRateType;
-        if (tBitRate >= 1000 && tBitRate < 1000000) tBitRateType = (tBitRate / 1000.0) + 'K';
-        if (tBitRate >= 1000000 && tBitRate < 1000000000) tBitRateType = (tBitRate / 1000000.0) + 'M';
-        if (tBitRate >= 1000000000 && tBitRate < 1000000000000) tBitRateType = (tBitRate / 1000000000.0) + 'G';
+            //var laneReqLVDS = Math.ceil(laneCalcLVDS);
+            //panelWord = panelWord + "<b>Required # of lane in calculation</b><br>" + laneReq.format() + "Lane<br><br>"
 
-        panelWord = panelWord + "<b><u>Total bit rate required</u></b><br>" + tBitRateType.fontcolor("Red") + "bps<br><br>"
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //var laneRealLVDS = ((laneCalcLVDS%2)?(laneCalcLVDS+1):laneCalcLVDS);
+            //panelWord = panelWord + "<b>Required # of lane in real</b><br>" + laneReal.format() + "Lane<br><br>"
 
-        var laneCalc = tBitRate / 3200000000;
-        panelWord = panelWord + "<b>Lane Calculation</b><br>" + laneCalc.format() + "Lane<br><br>"        
+            // HS-LVDS //
+            var laneCalcHSLVDS = tVideoRate / (74250000 * 7 * 5 * 2);
+            panelWord = panelWord + "===[HS-LVDS]===<br>";
+            panelWord = panelWord + "<b>Lane Calculation</b><br>" + laneCalcHSLVDS.format() + "Lane<br><br>"        
 
-        var laneReq = Math.ceil(tBitRate / 3200000000);
-        //panelWord = panelWord + "<b>Required # of lane in calculation</b><br>" + laneReq.format() + "Lane<br><br>"
+            //var laneReqHSLVDS = Math.ceil(laneCalcHSLVDS);
+            //panelWord = panelWord + "<b>Required # of lane in calculation</b><br>" + laneReq.format() + "Lane<br><br>"
 
-        var laneReal = ((laneReq%2)?laneReq+1:laneReq);
-        //panelWord = panelWord + "<b>Required # of lane in real</b><br>" + laneReal.format() + "Lane<br><br>"
+            //var laneRealHSLVDS = ((laneReqHSLVDS%2)?laneReqHSLVDS+1:laneReqHSLVDS);
+            //panelWord = panelWord + "<b>Required # of lane in real</b><br>" + laneReal.format() + "Lane<br><br>"
+        }
+        else
+        {
+            //VideoRate/////////////////////////////////////////////////////////////////////////////////////////////////
+            var tVideoRate = pixelFreq * 7 * 4; // 7bit, RGB 24bit 4ch 
 
-        var laneReqLG = Math.ceil(tBitRate / 2970000000);
-        //panelWord = panelWord + "<b>Required # of lane in calculation(LGE)</b><br>" + laneReqLG.format() + "Lane<br><br>"
+            var tVideoRateType;
+            if (tVideoRate >= 1000 && tVideoRate < 1000000) tVideoRateType = (tVideoRate / 1000.0) + 'K';
+            if (tVideoRate >= 1000000 && tVideoRate < 1000000000) tVideoRateType = (tVideoRate / 1000000.0) + 'M';
+            if (tVideoRate >= 1000000000 && tVideoRate < 1000000000000) tVideoRateType = (tVideoRate / 1000000000.0) + 'G';
 
-        var laneRealLG = ((laneReqLG%2)?laneReqLG+1:laneReqLG);
-        panelWord = panelWord + "<b><u>Required # of lane in real(LGE)</u></b><br>" + laneRealLG.format().fontcolor("Red") + "Lane<br><br>"
+            panelWord = panelWord + "<b>Total video data rate(Payload)</b><br>" + tVideoRateType + "bps<br><br>";
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        $( "#page_view7 .panel-body" ).html(panelWord);
+            // LVDS //
+            var laneCalcLVDS = tVideoRate / (74250000 * 7 * 4);
+            panelWord = panelWord + "====[LVDS]====<br>";
+            panelWord = panelWord + "<b>Lane Calculation</b><br>" + laneCalcLVDS.format() + "Lane<br><br>"        
+
+            //var laneReqLVDS = Math.ceil(laneCalcLVDS);
+            //panelWord = panelWord + "<b>Required # of lane in calculation</b><br>" + laneReq.format() + "Lane<br><br>"
+
+            //var laneRealLVDS = ((laneCalcLVDS%2)?(laneCalcLVDS+1):laneCalcLVDS);
+            //panelWord = panelWord + "<b>Required # of lane in real</b><br>" + laneReal.format() + "Lane<br><br>"
+
+            // HS-LVDS //
+            var laneCalcHSLVDS = tVideoRate / (74250000 * 7 * 4 * 2);
+            panelWord = panelWord + "===[HS-LVDS]===<br>";
+            panelWord = panelWord + "<b>Lane Calculation</b><br>" + laneCalcHSLVDS.format() + "Lane<br><br>"        
+
+            //var laneReqHSLVDS = Math.ceil(laneCalcHSLVDS);
+            //panelWord = panelWord + "<b>Required # of lane in calculation</b><br>" + laneReq.format() + "Lane<br><br>"
+
+            //var laneRealHSLVDS = ((laneReqHSLVDS%2)?laneReqHSLVDS+1:laneReqHSLVDS);
+            //panelWord = panelWord + "<b>Required # of lane in real</b><br>" + laneReal.format() + "Lane<br><br>"    
+
+        }
+
+        $( "#page_view6 .panel-body" ).html(panelWord);
     }
 
 };
