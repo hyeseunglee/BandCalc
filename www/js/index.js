@@ -18,10 +18,10 @@ var app = {
 
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
-        document.addEventListener("backbutton", onExitSelect, false);
     },
 
     onDeviceReady: function() {
+        document.addEventListener("backbutton", onExitSelect, false);
         app.receivedEvent('deviceready');
     },
 
