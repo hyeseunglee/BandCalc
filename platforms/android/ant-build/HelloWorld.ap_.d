@@ -18,6 +18,7 @@ D:\JavaProject\Github\BandCalc\platforms\android\assets\www\cordova.js \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\cordova_plugins.js \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\css \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\dp.html \
+D:\JavaProject\Github\BandCalc\platforms\android\assets\www\epi.html \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\hdmi.html \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\hslvds.html \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\icon.png \
@@ -66,6 +67,7 @@ D:\JavaProject\Github\BandCalc\platforms\android\assets\www\css\images\ui-icons_
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\img\logo.png \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js\bootstrap.min.js \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js\dp.js \
+D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js\epi.js \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js\hdmi.js \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js\hslvds.js \
 D:\JavaProject\Github\BandCalc\platforms\android\assets\www\js\index.js \
